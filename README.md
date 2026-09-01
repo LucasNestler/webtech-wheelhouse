@@ -14,10 +14,16 @@ All initial analysis and project specification documentation are located in the 
 ## Setup Instructions
 
 1. **Clone the repository:**
-   git clone https://github.com/LucasNestler/webtech-wheelhouse
-   cd webtech-wheelhouse
-   bundle install
-   npm install
-   bin/rails db:create
-   npm run build:css
-   bin/dev
+   `git clone https://github.com/LucasNestler/webtech-wheelhouse`
+2. **Navigate to the directory:**
+   `cd webtech-wheelhouse`
+3. **Install Gem dependencies:**
+   `bundle install`
+4. **Install Node dependencies:**
+   `npm install`
+5. **Create the database:**
+   `bin/rails db:create`
+6. **Build CSS:**
+   `npm run build:css`
+7. **Start the development server:**
+   `bin/dev`
