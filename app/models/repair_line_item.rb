@@ -1,0 +1,2 @@
+class RepairLineItem < ApplicationRecord
+end

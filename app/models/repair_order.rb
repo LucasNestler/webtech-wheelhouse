@@ -1,0 +1,2 @@
+class RepairOrder < ApplicationRecord
+end

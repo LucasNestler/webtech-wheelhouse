@@ -10,10 +10,10 @@
       </tr>
     </thead>
     <tbody>
-      <% @jobs.each do |job| %>
+      <% @services.each do |service| %>
         <tr>
-          <td><%= job[:name] %></td>
-          <td><strong><%= job[:price] %></strong></td>
+          <td><%= service.name %></td>
+          <td><strong><%= service.default_price %></strong></td>
         </tr>
       <% end %>
     </tbody>
