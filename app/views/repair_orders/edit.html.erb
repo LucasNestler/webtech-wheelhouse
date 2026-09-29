@@ -1,0 +1,4 @@
+<% content_for :title, "Edit Repair ##{@repair_order.id}" %>
+<h1>Edit Repair #<%= @repair_order.id %></h1>
+
+<%= render "form", repair_order: @repair_order %>

@@ -34,6 +34,8 @@
   <p><strong>Picked Up:</strong> <%= l @repair_order.picked_up_at, format: :long %></p>
 <% end %>
 
+<%= render "shared/record_actions", record: @repair_order, record_label: "Repair ##{@repair_order.id}" %>
+
 <h2 class="mt-4">Services Charged</h2>
 <% if @repair_order.repair_line_items.any? %>
   <div class="table-responsive">

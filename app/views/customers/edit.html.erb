@@ -1,0 +1,4 @@
+<% content_for :title, "Edit #{@customer.name}" %>
+<h1>Edit <%= @customer.name %></h1>
+
+<%= render "form", customer: @customer %>

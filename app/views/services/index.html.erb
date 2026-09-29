@@ -1,5 +1,8 @@
 <% content_for :title, "Services & Prices" %>
-<h1>Services & Pricing</h1>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Services & Pricing</h1>
+  <%= link_to "New Service", new_service_path, class: "btn btn-primary" %>
+</div>
 <p class="lead">We charge by the job, not by the hour. Here is our wall list of standard repairs:</p>
 
 <% if @services.any? %>

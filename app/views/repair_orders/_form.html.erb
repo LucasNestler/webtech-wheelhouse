@@ -1,0 +1,74 @@
+<%= form_with model: repair_order, local: true do |f| %>
+  <% if repair_order.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(repair_order.errors.count, "error") %> prohibited this repair from being saved:</h5>
+      <ul class="mb-0">
+        <% repair_order.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :bike_id, "Bike", class: "form-label" %>
+    <%= f.collection_select :bike_id, @bikes, :id, ->(bike) { "#{bike.serial_number} (#{bike.customer.name})" },
+          { include_blank: "Select a bike" }, class: field_class(repair_order, :bike_id, "form-select") %>
+    <%= invalid_feedback(repair_order, :bike_id) %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :mechanic_id, "Mechanic", class: "form-label" %>
+    <%= f.collection_select :mechanic_id, @mechanics, :id, :name,
+          { include_blank: "Unassigned" }, class: field_class(repair_order, :mechanic_id, "form-select") %>
+    <%= invalid_feedback(repair_order, :mechanic_id) %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :status, class: "form-label" %>
+    <%= f.select :status, RepairOrder.statuses.map { |key, label| [label, key] },
+          {}, class: field_class(repair_order, :status, "form-select") %>
+    <%= invalid_feedback(repair_order, :status) %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :promised_on, class: "form-label" %>
+    <%= f.date_field :promised_on, class: field_class(repair_order, :promised_on, "form-control") %>
+    <%= invalid_feedback(repair_order, :promised_on) %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :quote_accepted, class: "form-label" %>
+    <%= f.select :quote_accepted, [["Awaiting customer", nil], ["Accepted", true], ["Declined", false]],
+          {}, class: field_class(repair_order, :quote_accepted, "form-select") %>
+    <%= invalid_feedback(repair_order, :quote_accepted) %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :quoted_at, "Quoted at", class: "form-label" %>
+    <%= f.datetime_field :quoted_at, class: field_class(repair_order, :quoted_at, "form-control") %>
+    <%= invalid_feedback(repair_order, :quoted_at) %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :completed_at, "Completed at", class: "form-label" %>
+    <%= f.datetime_field :completed_at, class: field_class(repair_order, :completed_at, "form-control") %>
+    <%= invalid_feedback(repair_order, :completed_at) %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :picked_up_at, "Picked up at", class: "form-label" %>
+    <%= f.datetime_field :picked_up_at, class: field_class(repair_order, :picked_up_at, "form-control") %>
+    <%= invalid_feedback(repair_order, :picked_up_at) %>
+  </div>
+
+  <h2 class="h5 mt-4">Services Charged</h2>
+  <%= f.fields_for :repair_line_items do |line_form| %>
+    <%= render "repair_line_item_fields", f: line_form %>
+  <% end %>
+
+  <div class="d-flex gap-2 mt-3">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", repair_order.persisted? ? repair_order : repair_orders_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

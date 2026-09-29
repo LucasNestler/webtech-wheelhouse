@@ -4,6 +4,10 @@ class RepairOrder < ApplicationRecord
   has_many :repair_line_items, -> { oldest_first }, dependent: :destroy
   has_many :services, through: :repair_line_items
 
+  accepts_nested_attributes_for :repair_line_items,
+    allow_destroy: true,
+    reject_if: ->(attrs) { attrs["service_id"].blank? }
+
   enum :status, {
     dropped_off: "Dropped Off",
     awaiting_estimate_approval: "Awaiting Estimate Approval",

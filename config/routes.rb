@@ -16,9 +16,9 @@ Rails.application.routes.draw do
   get "visit", to: "pages#visit", as: :visit
   get "about", to: "pages#about", as: :about
 
-  resources :customers, only: [ :index, :show ]
-  resources :bikes, only: [ :index, :show ]
-  resources :repair_orders, path: "repairs", only: [ :index, :show ]
-  resources :services, only: [ :index, :show ]
-  resources :mechanics, path: "staff", only: [ :index, :show ]
+  resources :customers
+  resources :bikes
+  resources :repair_orders, path: "repairs"
+  resources :services
+  resources :mechanics, path: "staff"
 end

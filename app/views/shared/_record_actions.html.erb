@@ -1,0 +1,5 @@
+<div class="d-flex gap-2 mt-4">
+  <%= link_to "Edit", edit_polymorphic_path(record), class: "btn btn-outline-primary" %>
+  <%= button_to "Delete", record, method: :delete, class: "btn btn-outline-danger",
+        form: { data: { turbo_confirm: "Delete #{record_label}? This can't be undone." } } %>
+</div>

@@ -1,0 +1,29 @@
+<%= form_with model: customer, local: true do |f| %>
+  <% if customer.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(customer.errors.count, "error") %> prohibited this customer from being saved:</h5>
+      <ul class="mb-0">
+        <% customer.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: field_class(customer, :name, "form-control") %>
+    <%= invalid_feedback(customer, :name) %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :phone, class: "form-label" %>
+    <%= f.text_field :phone, class: field_class(customer, :phone, "form-control") %>
+    <%= invalid_feedback(customer, :phone) %>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", customer.persisted? ? customer : customers_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

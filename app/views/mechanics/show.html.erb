@@ -2,4 +2,6 @@
 <h1><%= @mechanic.name %></h1>
 <p><strong>Role:</strong> <%= @mechanic.role %></p>
 
+<%= render "shared/record_actions", record: @mechanic, record_label: @mechanic.name %>
+
 <p class="mt-4"><%= link_to "Back to Staff", mechanics_path %></p>

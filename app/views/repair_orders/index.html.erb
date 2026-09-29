@@ -1,5 +1,8 @@
 <% content_for :title, "Repairs" %>
-<h1>Repairs</h1>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Repairs</h1>
+  <%= link_to "New Repair", new_repair_order_path, class: "btn btn-primary" %>
+</div>
 
 <% if @repair_orders.any? %>
   <div class="table-responsive mt-4">
