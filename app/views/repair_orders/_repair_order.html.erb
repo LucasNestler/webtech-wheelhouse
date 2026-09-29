@@ -1,7 +1,7 @@
-<tr class="<%= "table-danger" if repair_order.promised_on < Date.today && repair_order.status != "Picked Up" %>">
+<tr class="<%= "table-danger" if repair_order.overdue? %>">
   <td><%= link_to "Repair ##{repair_order.id}", repair_order %></td>
   <td><%= link_to repair_order.bike.serial_number, repair_order.bike %></td>
   <td><%= link_to repair_order.bike.customer.name, repair_order.bike.customer %></td>
-  <td><span class="badge bg-secondary"><%= repair_order.status %></span></td>
+  <td><span class="badge bg-secondary"><%= repair_order.status_label %></span></td>
   <td><%= l repair_order.promised_on, format: :long %></td>
 </tr>

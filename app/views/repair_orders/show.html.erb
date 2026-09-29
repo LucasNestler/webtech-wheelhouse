@@ -1,7 +1,7 @@
 <% content_for :title, "Repair ##{@repair_order.id}" %>
 <h1>Repair #<%= @repair_order.id %></h1>
 
-<p><strong>Status:</strong> <span class="badge bg-secondary"><%= @repair_order.status %></span></p>
+<p><strong>Status:</strong> <span class="badge bg-secondary"><%= @repair_order.status_label %></span></p>
 <p><strong>Bike:</strong> <%= link_to @repair_order.bike.serial_number, @repair_order.bike %></p>
 <p><strong>Customer:</strong> <%= link_to @repair_order.bike.customer.name, @repair_order.bike.customer %></p>
 <p>
@@ -55,7 +55,7 @@
       <tfoot>
         <tr>
           <th>Total</th>
-          <th><%= number_to_currency @repair_order.repair_line_items.sum(:charged_price) %></th>
+          <th><%= number_to_currency @repair_order.total %></th>
         </tr>
       </tfoot>
     </table>

@@ -1,6 +1,6 @@
 class MechanicsController < ApplicationController
   def index
-    @mechanics = Mechanic.order(:name)
+    @mechanics = Mechanic.by_name
   end
 
   def show
