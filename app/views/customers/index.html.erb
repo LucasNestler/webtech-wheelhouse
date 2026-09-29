@@ -1,0 +1,25 @@
+<% content_for :title, "Customers" %>
+<h1>Customers</h1>
+
+<% if @customers.any? %>
+  <div class="table-responsive mt-4">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @customers.each do |customer| %>
+          <tr>
+            <td><%= link_to customer.name, customer %></td>
+            <td><%= customer.phone %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p>No customers yet.</p>
+<% end %>

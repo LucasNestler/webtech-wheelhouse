@@ -70,6 +70,9 @@ b10 = Bike.create!(make: "Marin", model: "Fairfax 1", color: "Gloss Black", seri
 b11 = Bike.create!(make: "Santa Cruz", model: "Chameleon", color: "Purple", serial_number: "SN-SANT-00291", customer_id: c10.id)
 b12 = Bike.create!(make: "Fuji", model: "Feather", color: "White", serial_number: "SN-FUJI-33291", customer_id: c3.id)
 
+# Bike that has never been in for a repair
+b13 = Bike.create!(make: "Public", model: "M11 Deluxe", color: "Teal", serial_number: "SN-PUBL-00512", customer_id: c1.id)
+
 
 puts "Seeding Repair Orders and Line Items..."
 

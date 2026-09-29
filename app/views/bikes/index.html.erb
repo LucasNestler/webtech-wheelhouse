@@ -1,0 +1,23 @@
+<% content_for :title, "Bikes" %>
+<h1>Bikes</h1>
+
+<% if @bikes.any? %>
+  <div class="table-responsive mt-4">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Serial Number</th>
+          <th scope="col">Make</th>
+          <th scope="col">Model</th>
+          <th scope="col">Color</th>
+          <th scope="col">Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render @bikes %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p>No bikes yet.</p>
+<% end %>

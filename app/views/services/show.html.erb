@@ -1,0 +1,12 @@
+<% content_for :title, @service.name %>
+<h1><%= @service.name %></h1>
+<p><strong>Standard Price:</strong> <%= number_to_currency @service.default_price %></p>
+<p><strong>Status:</strong>
+  <% if @service.active %>
+    <span class="badge bg-success">Active</span>
+  <% else %>
+    <span class="badge bg-secondary">Inactive</span>
+  <% end %>
+</p>
+
+<p class="mt-4"><%= link_to "Back to Services", services_path %></p>

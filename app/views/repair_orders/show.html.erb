@@ -1,0 +1,67 @@
+<% content_for :title, "Repair ##{@repair_order.id}" %>
+<h1>Repair #<%= @repair_order.id %></h1>
+
+<p><strong>Status:</strong> <span class="badge bg-secondary"><%= @repair_order.status %></span></p>
+<p><strong>Bike:</strong> <%= link_to @repair_order.bike.serial_number, @repair_order.bike %></p>
+<p><strong>Customer:</strong> <%= link_to @repair_order.bike.customer.name, @repair_order.bike.customer %></p>
+<p>
+  <strong>Mechanic:</strong>
+  <% if @repair_order.mechanic %>
+    <%= link_to @repair_order.mechanic.name, @repair_order.mechanic %>
+  <% else %>
+    Unassigned
+  <% end %>
+</p>
+<p><strong>Promised:</strong> <%= l @repair_order.promised_on, format: :long %></p>
+<% if @repair_order.quoted_at %>
+  <p><strong>Quoted:</strong> <%= l @repair_order.quoted_at, format: :long %></p>
+  <p>
+    <strong>Quote Accepted:</strong>
+    <% case @repair_order.quote_accepted %>
+    <% when true %>
+      Yes
+    <% when false %>
+      No
+    <% else %>
+      Awaiting Customer
+    <% end %>
+  </p>
+<% end %>
+<% if @repair_order.completed_at %>
+  <p><strong>Completed:</strong> <%= l @repair_order.completed_at, format: :long %></p>
+<% end %>
+<% if @repair_order.picked_up_at %>
+  <p><strong>Picked Up:</strong> <%= l @repair_order.picked_up_at, format: :long %></p>
+<% end %>
+
+<h2 class="mt-4">Services Charged</h2>
+<% if @repair_order.repair_line_items.any? %>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Service</th>
+          <th scope="col">Price Charged</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @repair_order.repair_line_items.each do |item| %>
+          <tr>
+            <td><%= link_to item.service.name, item.service %></td>
+            <td><%= number_to_currency item.charged_price %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Total</th>
+          <th><%= number_to_currency @repair_order.repair_line_items.sum(:charged_price) %></th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+<% else %>
+  <p>No services charged yet.</p>
+<% end %>
+
+<p class="mt-4"><%= link_to "Back to Repairs", repair_orders_path %></p>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Wheelhouse Bicycle Repair</title>
+    <title><%= yield(:title).presence || "Wheelhouse Bicycle Repair" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -35,7 +35,19 @@
               <%= link_to "Home", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
             </li>
             <li class="nav-item">
+              <%= link_to "Customers", customers_path, class: "nav-link #{'active' if current_page?(customers_path)}" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Bikes", bikes_path, class: "nav-link #{'active' if current_page?(bikes_path)}" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Repairs", repair_orders_path, class: "nav-link #{'active' if current_page?(repair_orders_path)}" %>
+            </li>
+            <li class="nav-item">
               <%= link_to "Services & Prices", services_path, class: "nav-link #{'active' if current_page?(services_path)}" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Staff", mechanics_path, class: "nav-link #{'active' if current_page?(mechanics_path)}" %>
             </li>
             <li class="nav-item">
               <%= link_to "Visiting the Workshop", visit_path, class: "nav-link #{'active' if current_page?(visit_path)}" %>

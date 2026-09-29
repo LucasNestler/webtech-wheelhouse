@@ -1,0 +1,27 @@
+<% content_for :title, @customer.name %>
+<h1><%= @customer.name %></h1>
+<p><strong>Phone:</strong> <%= @customer.phone %></p>
+
+<h2 class="mt-4">Bikes</h2>
+<% if @customer.bikes.any? %>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Serial Number</th>
+          <th scope="col">Make</th>
+          <th scope="col">Model</th>
+          <th scope="col">Color</th>
+          <th scope="col">Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render @customer.bikes %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p>No bikes on file for this customer.</p>
+<% end %>
+
+<p class="mt-4"><%= link_to "Back to Customers", customers_path %></p>

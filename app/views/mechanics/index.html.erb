@@ -1,0 +1,25 @@
+<% content_for :title, "Staff" %>
+<h1>Staff</h1>
+
+<% if @mechanics.any? %>
+  <div class="table-responsive mt-4">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @mechanics.each do |mechanic| %>
+          <tr>
+            <td><%= link_to mechanic.name, mechanic %></td>
+            <td><%= mechanic.role %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p>No staff yet.</p>
+<% end %>
