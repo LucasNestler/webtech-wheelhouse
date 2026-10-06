@@ -5,7 +5,7 @@ class RepairOrdersController < ApplicationController
   EDIT_REPAIR_EXTRA_BLANK_LINES = 2
 
   def index
-    @repair_orders = RepairOrder.includes(bike: :customer).by_promised_date
+    @repair_orders = RepairOrder.includes(bike: :customer).with_attached_intake_photos.with_rich_text_diagnosis.by_promised_date
   end
 
   def show
@@ -52,7 +52,8 @@ class RepairOrdersController < ApplicationController
   private
 
   def set_repair_order
-    @repair_order = RepairOrder.includes(:mechanic, bike: :customer, repair_line_items: :service).find(params[:id])
+    @repair_order = RepairOrder.includes(:mechanic, bike: :customer, repair_line_items: :service)
+      .with_attached_intake_photos.with_rich_text_diagnosis.find(params[:id])
   end
 
   def load_form_collections
@@ -64,7 +65,8 @@ class RepairOrdersController < ApplicationController
   def repair_order_params
     params.expect(repair_order: [
       :bike_id, :mechanic_id, :status, :promised_on,
-      :quoted_at, :quote_accepted, :completed_at, :picked_up_at,
+      :quoted_at, :quote_accepted, :completed_at, :picked_up_at, :diagnosis,
+      intake_photos: [],
       repair_line_items_attributes: [ [ :id, :service_id, :charged_price, :_destroy ] ]
     ])
   end

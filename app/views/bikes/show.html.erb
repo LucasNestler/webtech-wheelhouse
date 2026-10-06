@@ -10,7 +10,7 @@
   <h2 class="mb-0">Repairs</h2>
   <%= link_to "New Repair", new_repair_order_path(bike_id: @bike.id), class: "btn btn-sm btn-primary" %>
 </div>
-<% if @bike.repair_orders.any? %>
+<% if @repair_orders.any? %>
   <div class="table-responsive">
     <table class="table table-striped table-hover align-middle">
       <thead class="table-dark">
@@ -20,10 +20,12 @@
           <th scope="col">Customer</th>
           <th scope="col">Status</th>
           <th scope="col">Promised</th>
+          <th scope="col">Photo</th>
+          <th scope="col">Diagnosis</th>
         </tr>
       </thead>
       <tbody>
-        <%= render @bike.repair_orders %>
+        <%= render @repair_orders %>
       </tbody>
     </table>
   </div>

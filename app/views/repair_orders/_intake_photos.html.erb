@@ -1,0 +1,20 @@
+<% photos = repair_order.stored_intake_photos %>
+<% if photos.any? %>
+  <div class="row g-3">
+    <% photos.each_with_index do |photo, index| %>
+      <figure class="col-auto figure">
+        <%= link_to url_for(photo), target: "_blank", rel: "noopener" do %>
+          <%= image_tag photo.variant(variant), class: "figure-img img-fluid rounded mb-1",
+                alt: "#{intake_photo_alt(repair_order)} (photo #{index + 1})" %>
+        <% end %>
+        <figcaption class="figure-caption">
+          <%= button_to "Remove", repair_order_intake_photo_path(repair_order, photo), method: :delete,
+                class: "btn btn-sm btn-outline-danger",
+                form: { data: { turbo_confirm: "Remove this photo? This can't be undone." } } %>
+        </figcaption>
+      </figure>
+    <% end %>
+  </div>
+<% else %>
+  <p>No intake photos.</p>
+<% end %>

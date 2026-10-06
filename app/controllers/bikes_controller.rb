@@ -6,6 +6,7 @@ class BikesController < ApplicationController
   end
 
   def show
+    @repair_orders = @bike.repair_orders.includes(bike: :customer).with_attached_intake_photos.with_rich_text_diagnosis
   end
 
   def new
@@ -47,7 +48,7 @@ class BikesController < ApplicationController
   private
 
   def set_bike
-    @bike = Bike.includes(:customer, repair_orders: { bike: :customer }).find(params[:id])
+    @bike = Bike.includes(:customer).find(params[:id])
   end
 
   def bike_params

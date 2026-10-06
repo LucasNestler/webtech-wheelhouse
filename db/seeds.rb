@@ -1,3 +1,8 @@
+# Active Storage and Action Text rows are cleared first so a re-run leaves the same row counts.
+ActiveStorage::Attachment.find_each(&:purge)
+ActiveStorage::Blob.find_each(&:purge)
+ActionText::RichText.delete_all
+
 RepairLineItem.delete_all
 RepairOrder.delete_all
 Bike.delete_all
@@ -272,5 +277,55 @@ ro15 = RepairOrder.create!(
   completed_at: now - 1.hour
 )
 RepairLineItem.create!(repair_order_id: ro15.id, service_id: s_assembly.id, charged_price: 200.00)
+
+puts "Seeding intake photos and diagnoses..."
+
+PHOTO_DIR = Rails.root.join("db/seeds")
+SEED_PHOTOS = {
+  blue: "bike_blue.jpg",   # landscape
+  green: "bike_green.jpg", # square
+  red: "bike_red.jpg",     # square, small
+  black: "black_bike.png"  # portrait
+}.freeze
+
+intake_photos = {
+  ro2           => [ :blue ],
+  ro3           => [ :red, :blue, :green, :black ],
+  ro4           => [ :green, :black ],
+  ro5           => [ :blue ],
+  ro6           => [ :red, :green ],
+  ro8           => [ :black ],
+  ro9_old       => [ :green ],
+  ro10_new      => [ :black, :red, :blue ],
+  ro11_historical => [ :red ],
+  ro13          => [ :blue ],
+  ro14          => [ :green, :red ],
+  ro15          => [ :black ]
+}
+
+intake_photos.each do |repair_order, names|
+  names.each do |name|
+    path = PHOTO_DIR.join(SEED_PHOTOS.fetch(name))
+    repair_order.intake_photos.attach(io: File.open(path), filename: path.basename.to_s)
+  end
+end
+
+diagnoses = {
+  ro2 => "<div>Drivetrain is <strong>worn out</strong>. Recommend:<ul><li>New chain</li><li>Full tune-up</li></ul></div>",
+  ro3 => "<div><strong>Rear brake is spongy.</strong> Air in the line, pads glazed.<ul><li>Bleed both brakes</li><li>Replace rear pads</li></ul></div>",
+  ro4 => "<div>Rear wheel is <strong>out of true</strong> by about 4 mm.<ol><li>True the wheel</li><li>Check spoke tension</li></ol></div>",
+  ro5 => "<div>Chain and cassette caked in grime. <em>Full degrease</em> needed.<ul><li>Degrease drivetrain</li><li>Re-lube chain</li></ul></div>",
+  ro6 => "<div><strong>Fork seals leaking.</strong> Customer reports a harsh ride.<ul><li>Lower leg service</li><li>New oil and seals</li></ul></div>",
+  ro7 => "<div>Puncture from a <strong>thorn</strong>. Tube replaced, tyre checked.</div>",
+  ro8 => "<div>Frame has <strong>cracks near the head tube</strong>. See the <a href=\"https://www.parktool.com/en-us/blog/repair-help\">repair guide</a>.<blockquote>Customer declined the full overhaul.</blockquote></div>",
+  ro9_old => "<div>Annual service: <strong>all good</strong>.<ul><li>Cables adjusted</li><li>Bolts torqued</li></ul></div>",
+  ro10_new => "<div>Converting to <strong>tubeless</strong>. Rims are compatible.<ul><li>Tape rims</li><li>Add sealant</li></ul></div>",
+  ro11_historical => "<div>Shifting skips under load: <strong>stretched chain</strong>.<ul><li>New chain</li><li>Tune-up</li></ul></div>",
+  ro13 => "<div>Fit <strong>fenders</strong> and a rear rack.<ol><li>Check frame eyelets</li><li>Mount fenders</li><li>Mount rack</li></ol></div>",
+  ro14 => "<div><strong>Creaking</strong> from the bottom bracket and a loose headset.<ul><li>Regrease bottom bracket</li><li>Adjust headset</li></ul></div>",
+  ro15 => "<div>New build from the box.<ul><li>Assemble</li><li><strong>Torque check</strong></li></ul></div>"
+}
+
+diagnoses.each { |repair_order, html| repair_order.update!(diagnosis: html) }
 
 puts "Successfully seeded database!"

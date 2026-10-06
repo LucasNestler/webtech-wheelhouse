@@ -2,3 +2,6 @@
 <h1>Edit Repair #<%= @repair_order.id %></h1>
 
 <%= render "form", repair_order: @repair_order %>
+
+<h2 class="h5 mt-4">Saved intake photos</h2>
+<%= render "intake_photos", repair_order: @repair_order, variant: :thumb %>
