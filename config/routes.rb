@@ -23,4 +23,13 @@ Rails.application.routes.draw do
   end
   resources :services
   resources :mechanics, path: "staff"
+
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :services, only: [ :index, :show, :create ]
+      resources :repairs, only: [ :index, :show ]
+
+      match "(*path)", to: "base#route_not_found", via: :all
+    end
+  end
 end
