@@ -2,14 +2,16 @@ class BikesController < ApplicationController
   before_action :set_bike, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @bikes = Bike.includes(:customer).by_make_and_model
+    authorize Bike
+    @bikes = policy_scope(Bike).includes(:customer).by_make_and_model
   end
 
   def show
-    @repair_orders = @bike.repair_orders.includes(bike: :customer, taken_in_by: :mechanic).with_attached_intake_photos.with_rich_text_diagnosis
+    @repair_orders = policy_scope(@bike.repair_orders).includes(bike: :customer, taken_in_by: :mechanic).with_attached_intake_photos.with_rich_text_diagnosis
   end
 
   def new
+    authorize Bike
     @bike = Bike.new(customer_id: params[:customer_id])
     @customers = Customer.by_name
   end
@@ -19,6 +21,7 @@ class BikesController < ApplicationController
   end
 
   def create
+    authorize Bike
     @bike = Bike.new(bike_params)
     if @bike.save
       redirect_to @bike, notice: "#{@bike.serial_number} was added."
@@ -49,6 +52,7 @@ class BikesController < ApplicationController
 
   def set_bike
     @bike = Bike.includes(:customer).find(params[:id])
+    authorize @bike
   end
 
   def bike_params

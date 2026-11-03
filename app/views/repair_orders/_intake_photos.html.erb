@@ -8,9 +8,11 @@
                 alt: "#{intake_photo_alt(repair_order)} (photo #{index + 1})" %>
         <% end %>
         <figcaption class="figure-caption">
-          <%= button_to "Remove", repair_order_intake_photo_path(repair_order, photo), method: :delete,
-                class: "btn btn-sm btn-outline-danger",
-                form: { data: { turbo_confirm: "Remove this photo? This can't be undone." } } %>
+          <% if policy(repair_order).remove_photo? %>
+            <%= button_to "Remove", repair_order_intake_photo_path(repair_order, photo), method: :delete,
+                  class: "btn btn-sm btn-outline-danger",
+                  form: { data: { turbo_confirm: "Remove this photo? This can't be undone." } } %>
+          <% end %>
         </figcaption>
       </figure>
     <% end %>

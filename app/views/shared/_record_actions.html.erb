@@ -1,5 +1,12 @@
-<div class="d-flex gap-2 mt-4">
-  <%= link_to "Edit", edit_polymorphic_path(record), class: "btn btn-outline-primary" %>
-  <%= button_to "Delete", record, method: :delete, class: "btn btn-outline-danger",
-        form: { data: { turbo_confirm: "Delete #{record_label}? This can't be undone." } } %>
-</div>
+<% record_policy = policy(record) %>
+<% if record_policy.edit? || record_policy.destroy? %>
+  <div class="d-flex gap-2 mt-4">
+    <% if record_policy.edit? %>
+      <%= link_to "Edit", edit_polymorphic_path(record), class: "btn btn-outline-primary" %>
+    <% end %>
+    <% if record_policy.destroy? %>
+      <%= button_to "Delete", record, method: :delete, class: "btn btn-outline-danger",
+            form: { data: { turbo_confirm: "Delete #{record_label}? This can't be undone." } } %>
+    <% end %>
+  </div>
+<% end %>

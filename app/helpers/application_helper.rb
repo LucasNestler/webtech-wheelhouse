@@ -9,6 +9,17 @@ module ApplicationHelper
     content_tag(:div, object.errors[field].join(", "), class: "invalid-feedback")
   end
 
+  # The form shows each person only the fields their policy lets them write.
+  def permitted_field?(record, field)
+    policy(record).permitted_attributes.any? do |attribute|
+      attribute == field || (attribute.is_a?(Hash) && attribute.key?(field))
+    end
+  end
+
+  def repair_filter_link(label, active, **filter)
+    link_to label, repair_orders_path(**filter), class: "btn btn-sm #{active ? "btn-primary" : "btn-outline-primary"}"
+  end
+
   def taken_in_by_label(repair_order)
     repair_order.taken_in_by&.display_name || "Not recorded"
   end

@@ -2,13 +2,15 @@ class CustomersController < ApplicationController
   before_action :set_customer, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @customers = Customer.by_name
+    authorize Customer
+    @customers = policy_scope(Customer).by_name
   end
 
   def show
   end
 
   def new
+    authorize Customer
     @customer = Customer.new
   end
 
@@ -16,6 +18,7 @@ class CustomersController < ApplicationController
   end
 
   def create
+    authorize Customer
     @customer = Customer.new(customer_params)
     if @customer.save
       redirect_to @customer, notice: "#{@customer.name} was added."
@@ -44,6 +47,7 @@ class CustomersController < ApplicationController
 
   def set_customer
     @customer = Customer.includes(bikes: :customer).find(params[:id])
+    authorize @customer
   end
 
   def customer_params

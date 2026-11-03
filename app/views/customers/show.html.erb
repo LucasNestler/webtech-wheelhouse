@@ -6,7 +6,9 @@
 
 <div class="d-flex justify-content-between align-items-center mt-4">
   <h2 class="mb-0">Bikes</h2>
-  <%= link_to "New Bike", new_bike_path(customer_id: @customer.id), class: "btn btn-sm btn-primary" %>
+  <% if policy(Bike).new? %>
+    <%= link_to "New Bike", new_bike_path(customer_id: @customer.id), class: "btn btn-sm btn-primary" %>
+  <% end %>
 </div>
 <% if @customer.bikes.any? %>
   <div class="table-responsive">

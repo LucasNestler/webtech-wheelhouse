@@ -8,7 +8,9 @@
 
 <div class="d-flex justify-content-between align-items-center mt-4">
   <h2 class="mb-0">Repairs</h2>
-  <%= link_to "New Repair", new_repair_order_path(bike_id: @bike.id), class: "btn btn-sm btn-primary" %>
+  <% if policy(RepairOrder).new? %>
+    <%= link_to "New Repair", new_repair_order_path(bike_id: @bike.id), class: "btn btn-sm btn-primary" %>
+  <% end %>
 </div>
 <% if @repair_orders.any? %>
   <div class="table-responsive">

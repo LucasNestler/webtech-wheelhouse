@@ -35,21 +35,31 @@
               <li class="nav-item">
                 <%= link_to "Home", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
               </li>
-              <li class="nav-item">
-                <%= link_to "Customers", customers_path, class: "nav-link #{'active' if current_page?(customers_path)}" %>
-              </li>
-              <li class="nav-item">
-                <%= link_to "Bikes", bikes_path, class: "nav-link #{'active' if current_page?(bikes_path)}" %>
-              </li>
-              <li class="nav-item">
-                <%= link_to "Repairs", repair_orders_path, class: "nav-link #{'active' if current_page?(repair_orders_path)}" %>
-              </li>
-              <li class="nav-item">
-                <%= link_to "Services & Prices", services_path, class: "nav-link #{'active' if current_page?(services_path)}" %>
-              </li>
-              <li class="nav-item">
-                <%= link_to "Staff", mechanics_path, class: "nav-link #{'active' if current_page?(mechanics_path)}" %>
-              </li>
+              <% if policy(Customer).index? %>
+                <li class="nav-item">
+                  <%= link_to "Customers", customers_path, class: "nav-link #{'active' if current_page?(customers_path)}" %>
+                </li>
+              <% end %>
+              <% if policy(Bike).index? %>
+                <li class="nav-item">
+                  <%= link_to "Bikes", bikes_path, class: "nav-link #{'active' if current_page?(bikes_path)}" %>
+                </li>
+              <% end %>
+              <% if policy(RepairOrder).index? %>
+                <li class="nav-item">
+                  <%= link_to "Repairs", repair_orders_path, class: "nav-link #{'active' if current_page?(repair_orders_path)}" %>
+                </li>
+              <% end %>
+              <% if policy(Service).index? %>
+                <li class="nav-item">
+                  <%= link_to "Services & Prices", services_path, class: "nav-link #{'active' if current_page?(services_path)}" %>
+                </li>
+              <% end %>
+              <% if policy(Mechanic).index? %>
+                <li class="nav-item">
+                  <%= link_to "Staff", mechanics_path, class: "nav-link #{'active' if current_page?(mechanics_path)}" %>
+                </li>
+              <% end %>
               <li class="nav-item">
                 <%= link_to "Visiting the Workshop", visit_path, class: "nav-link #{'active' if current_page?(visit_path)}" %>
               </li>

@@ -10,74 +10,96 @@
     </div>
   <% end %>
 
-  <div class="mb-3">
-    <%= f.label :bike_id, "Bike", class: "form-label" %>
-    <%= f.collection_select :bike_id, @bikes, :id, ->(bike) { "#{bike.serial_number} (#{bike.customer.name})" },
-          { include_blank: "Select a bike" }, class: field_class(repair_order, :bike_id, "form-select") %>
-    <%= invalid_feedback(repair_order, :bike_id) %>
-  </div>
+  <% if permitted_field?(repair_order, :bike_id) %>
+    <div class="mb-3">
+      <%= f.label :bike_id, "Bike", class: "form-label" %>
+      <%= f.collection_select :bike_id, @bikes, :id, ->(bike) { "#{bike.serial_number} (#{bike.customer.name})" },
+            { include_blank: "Select a bike" }, class: field_class(repair_order, :bike_id, "form-select") %>
+      <%= invalid_feedback(repair_order, :bike_id) %>
+    </div>
+  <% end %>
 
-  <div class="mb-3">
-    <%= f.label :mechanic_id, "Mechanic", class: "form-label" %>
-    <%= f.collection_select :mechanic_id, @mechanics, :id, :name,
-          { include_blank: "Unassigned" }, class: field_class(repair_order, :mechanic_id, "form-select") %>
-    <%= invalid_feedback(repair_order, :mechanic_id) %>
-  </div>
+  <% if permitted_field?(repair_order, :mechanic_id) %>
+    <div class="mb-3">
+      <%= f.label :mechanic_id, "Mechanic", class: "form-label" %>
+      <%= f.collection_select :mechanic_id, @mechanics, :id, :name,
+            { include_blank: "Unassigned" }, class: field_class(repair_order, :mechanic_id, "form-select") %>
+      <%= invalid_feedback(repair_order, :mechanic_id) %>
+    </div>
+  <% end %>
 
-  <div class="mb-3">
-    <%= f.label :status, class: "form-label" %>
-    <%= f.select :status, RepairOrder.statuses.map { |key, label| [label, key] },
-          {}, class: field_class(repair_order, :status, "form-select") %>
-    <%= invalid_feedback(repair_order, :status) %>
-  </div>
+  <% if permitted_field?(repair_order, :status) %>
+    <div class="mb-3">
+      <%= f.label :status, class: "form-label" %>
+      <%= f.select :status, RepairOrder.statuses.map { |key, label| [label, key] },
+            {}, class: field_class(repair_order, :status, "form-select") %>
+      <%= invalid_feedback(repair_order, :status) %>
+    </div>
+  <% end %>
 
-  <div class="mb-3">
-    <%= f.label :promised_on, class: "form-label" %>
-    <%= f.date_field :promised_on, class: field_class(repair_order, :promised_on, "form-control") %>
-    <%= invalid_feedback(repair_order, :promised_on) %>
-  </div>
+  <% if permitted_field?(repair_order, :promised_on) %>
+    <div class="mb-3">
+      <%= f.label :promised_on, class: "form-label" %>
+      <%= f.date_field :promised_on, class: field_class(repair_order, :promised_on, "form-control") %>
+      <%= invalid_feedback(repair_order, :promised_on) %>
+    </div>
+  <% end %>
 
-  <div class="mb-3">
-    <%= f.label :quote_accepted, class: "form-label" %>
-    <%= f.select :quote_accepted, [["Awaiting customer", nil], ["Accepted", true], ["Declined", false]],
-          {}, class: field_class(repair_order, :quote_accepted, "form-select") %>
-    <%= invalid_feedback(repair_order, :quote_accepted) %>
-  </div>
+  <% if permitted_field?(repair_order, :quote_accepted) %>
+    <div class="mb-3">
+      <%= f.label :quote_accepted, class: "form-label" %>
+      <%= f.select :quote_accepted, [["Awaiting customer", nil], ["Accepted", true], ["Declined", false]],
+            {}, class: field_class(repair_order, :quote_accepted, "form-select") %>
+      <%= invalid_feedback(repair_order, :quote_accepted) %>
+    </div>
+  <% end %>
 
-  <div class="mb-3">
-    <%= f.label :quoted_at, "Quoted at", class: "form-label" %>
-    <%= f.datetime_field :quoted_at, class: field_class(repair_order, :quoted_at, "form-control") %>
-    <%= invalid_feedback(repair_order, :quoted_at) %>
-  </div>
+  <% if permitted_field?(repair_order, :quoted_at) %>
+    <div class="mb-3">
+      <%= f.label :quoted_at, "Quoted at", class: "form-label" %>
+      <%= f.datetime_field :quoted_at, class: field_class(repair_order, :quoted_at, "form-control") %>
+      <%= invalid_feedback(repair_order, :quoted_at) %>
+    </div>
+  <% end %>
 
-  <div class="mb-3">
-    <%= f.label :completed_at, "Completed at", class: "form-label" %>
-    <%= f.datetime_field :completed_at, class: field_class(repair_order, :completed_at, "form-control") %>
-    <%= invalid_feedback(repair_order, :completed_at) %>
-  </div>
+  <% if permitted_field?(repair_order, :completed_at) %>
+    <div class="mb-3">
+      <%= f.label :completed_at, "Completed at", class: "form-label" %>
+      <%= f.datetime_field :completed_at, class: field_class(repair_order, :completed_at, "form-control") %>
+      <%= invalid_feedback(repair_order, :completed_at) %>
+    </div>
+  <% end %>
 
-  <div class="mb-3">
-    <%= f.label :picked_up_at, "Picked up at", class: "form-label" %>
-    <%= f.datetime_field :picked_up_at, class: field_class(repair_order, :picked_up_at, "form-control") %>
-    <%= invalid_feedback(repair_order, :picked_up_at) %>
-  </div>
+  <% if permitted_field?(repair_order, :picked_up_at) %>
+    <div class="mb-3">
+      <%= f.label :picked_up_at, "Picked up at", class: "form-label" %>
+      <%= f.datetime_field :picked_up_at, class: field_class(repair_order, :picked_up_at, "form-control") %>
+      <%= invalid_feedback(repair_order, :picked_up_at) %>
+    </div>
+  <% end %>
 
-  <div class="mb-3">
-    <%= f.label :diagnosis, class: "form-label" %>
-    <%= f.rich_text_area :diagnosis %>
-  </div>
+  <% if permitted_field?(repair_order, :diagnosis) %>
+    <div class="mb-3">
+      <%= f.label :diagnosis, class: "form-label" %>
+      <%= f.rich_text_area :diagnosis %>
+    </div>
+  <% end %>
 
-  <div class="mb-3">
-    <%= f.label :intake_photos, "Intake photos", class: "form-label" %>
-    <%= f.file_field :intake_photos, multiple: true, accept: RepairOrder::INTAKE_PHOTO_TYPES.join(","),
-          class: field_class(repair_order, :intake_photos, "form-control") %>
-    <%= invalid_feedback(repair_order, :intake_photos) %>
-    <div class="form-text">Choose files again after an error. New photos are added to the ones already saved.</div>
-  </div>
+  <% if permitted_field?(repair_order, :intake_photos) %>
+    <div class="mb-3">
+      <%= f.label :intake_photos, "Intake photos", class: "form-label" %>
+      <%= f.file_field :intake_photos, multiple: true, accept: RepairOrder::INTAKE_PHOTO_TYPES.join(","),
+            class: field_class(repair_order, :intake_photos, "form-control") %>
+      <%= invalid_feedback(repair_order, :intake_photos) %>
+      <div class="form-text">Choose files again after an error. New photos are added to the ones already saved.</div>
+    </div>
+  <% end %>
 
-  <h2 class="h5 mt-4">Services Charged</h2>
-  <%= f.fields_for :repair_line_items do |line_form| %>
-    <%= render "repair_line_item_fields", f: line_form %>
+  <% if permitted_field?(repair_order, :repair_line_items_attributes) %>
+    <h2 class="h5 mt-4">Services Charged</h2>
+    <%= f.fields_for :repair_line_items do |line_form| %>
+      <%= render "repair_line_item_fields", f: line_form %>
+    <% end %>
   <% end %>
 
   <div class="d-flex gap-2 mt-3">

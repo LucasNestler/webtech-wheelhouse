@@ -3,13 +3,15 @@ class ServicesController < ApplicationController
   before_action :set_service, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @services = Service.by_name
+    authorize Service
+    @services = policy_scope(Service).by_name
   end
 
   def show
   end
 
   def new
+    authorize Service
     @service = Service.new
   end
 
@@ -17,6 +19,7 @@ class ServicesController < ApplicationController
   end
 
   def create
+    authorize Service
     @service = Service.new(service_params)
     if @service.save
       redirect_to @service, notice: "#{@service.name} was added."
@@ -45,6 +48,7 @@ class ServicesController < ApplicationController
 
   def set_service
     @service = Service.find(params[:id])
+    authorize @service
   end
 
   def service_params

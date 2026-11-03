@@ -1,7 +1,9 @@
 <% content_for :title, "Bikes" %>
 <div class="d-flex justify-content-between align-items-center">
   <h1>Bikes</h1>
-  <%= link_to "New Bike", new_bike_path, class: "btn btn-primary" %>
+  <% if policy(Bike).new? %>
+    <%= link_to "New Bike", new_bike_path, class: "btn btn-primary" %>
+  <% end %>
 </div>
 
 <% if @bikes.any? %>

@@ -1,4 +1,6 @@
 class PasswordsController < ApplicationController
+  # Listed in docs/decisions.md: an account is not a resource with a policy.
+  skip_after_action :verify_authorized
   allow_unauthenticated_access only: %i[ new create edit update ]
   before_action :set_user_by_token, only: %i[ edit update ]
 

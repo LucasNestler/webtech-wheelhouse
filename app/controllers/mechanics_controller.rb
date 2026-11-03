@@ -2,13 +2,15 @@ class MechanicsController < ApplicationController
   before_action :set_mechanic, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @mechanics = Mechanic.by_name
+    authorize Mechanic
+    @mechanics = policy_scope(Mechanic).by_name
   end
 
   def show
   end
 
   def new
+    authorize Mechanic
     @mechanic = Mechanic.new
   end
 
@@ -16,6 +18,7 @@ class MechanicsController < ApplicationController
   end
 
   def create
+    authorize Mechanic
     @mechanic = Mechanic.new(mechanic_params)
     if @mechanic.save
       redirect_to @mechanic, notice: "#{@mechanic.name} was added."
@@ -44,6 +47,7 @@ class MechanicsController < ApplicationController
 
   def set_mechanic
     @mechanic = Mechanic.find(params[:id])
+    authorize @mechanic
   end
 
   def mechanic_params

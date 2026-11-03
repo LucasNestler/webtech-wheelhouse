@@ -2,8 +2,8 @@
 <h1>Repair #<%= @repair_order.id %></h1>
 
 <p><strong>Status:</strong> <span class="badge bg-secondary"><%= @repair_order.status_label %></span></p>
-<p><strong>Bike:</strong> <%= link_to @repair_order.bike.serial_number, @repair_order.bike %></p>
-<p><strong>Customer:</strong> <%= link_to @repair_order.bike.customer.name, @repair_order.bike.customer %></p>
+<p><strong>Bike:</strong> <%= link_to_if policy(@repair_order.bike).show?, @repair_order.bike.serial_number, @repair_order.bike %></p>
+<p><strong>Customer:</strong> <%= link_to_if policy(@repair_order.bike.customer).show?, @repair_order.bike.customer.name, @repair_order.bike.customer %></p>
 <p><strong>Taken in by:</strong> <%= taken_in_by_label(@repair_order) %></p>
 <p>
   <strong>Mechanic:</strong>

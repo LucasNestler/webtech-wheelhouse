@@ -1,8 +1,10 @@
 # The password of both is in ActionDispatch::IntegrationTest::TEST_PASSWORD (test_helper.rb).
 <% password_digest = BCrypt::Password.create("correct-password") %>
 
+# The tests of the pages sign in as the owner, who may open all of them.
 one:
   email_address: one@example.com
+  role: owner
   password_digest: <%= password_digest %>
 
 two:

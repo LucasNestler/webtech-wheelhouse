@@ -1,7 +1,17 @@
 <% content_for :title, "Repairs" %>
 <div class="d-flex justify-content-between align-items-center">
   <h1>Repairs</h1>
-  <%= link_to "New Repair", new_repair_order_path, class: "btn btn-primary" %>
+  <% if policy(RepairOrder).new? %>
+    <%= link_to "New Repair", new_repair_order_path, class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mt-3">
+  <%= repair_filter_link "All", params[:state].blank? && params[:overdue].blank? %>
+  <% RepairOrder.statuses.each do |state, label| %>
+    <%= repair_filter_link label, params[:state] == state, state: state %>
+  <% end %>
+  <%= repair_filter_link "Overdue", params[:overdue].present?, overdue: 1 %>
 </div>
 
 <% if @repair_orders.any? %>
@@ -25,5 +35,5 @@
     </table>
   </div>
 <% else %>
-  <p>No repairs yet.</p>
+  <p class="mt-4">No repairs to show.</p>
 <% end %>

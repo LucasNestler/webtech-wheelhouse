@@ -1,4 +1,6 @@
 class RegistrationsController < ApplicationController
+  # Listed in docs/decisions.md: an account is not a resource with a policy.
+  skip_after_action :verify_authorized
   allow_unauthenticated_access only: %i[ new create ]
 
   def new

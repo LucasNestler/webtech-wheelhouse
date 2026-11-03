@@ -181,9 +181,9 @@ class AuthenticationTest < ActionDispatch::IntegrationTest
   end
 
   test "a member of the staff with an account cannot be destroyed, and the page says so" do
-    users(:one).update!(mechanic: @mechanic)
+    users(:two).update!(mechanic: @mechanic)
     @repair.update!(mechanic: @mechanic)
-    sign_in_as users(:two)
+    sign_in_as users(:one)
 
     assert_no_difference -> { Mechanic.count } do
       delete mechanic_path(@mechanic)

@@ -28,3 +28,16 @@
 * **Question**: Every page requires a session. Do the files of the intake photos require one as well?
 * **Assumption Made**: No. Active Storage serves them from its own controllers, through long signed URLs that nobody can guess. A visitor can only reach a photo with a URL that was first shown to someone signed in.
 * **Alternative & Impact**: Requiring a session for the files would mean replacing the routes of Active Storage, for a risk that only appears if someone shares a URL.
+
+### Decision 6: The Actions That Do Not Ask a Policy
+* **Question**: `verify_authorized` makes every action ask its policy. Which actions are left out, and why?
+* **Assumption Made**: Only those that exist before there is anyone to ask about, or that act on the account of the person asking. A policy answers what an account may do with a resource, and an account is not a resource with pages. They are all of `SessionsController`, `RegistrationsController` and `PasswordsController`:
+  * `SessionsController`: `new` and `create` (signing in) are public because a visitor has no account yet. `destroy` (signing out) needs a session and only ends the session of the person asking.
+  * `RegistrationsController`: `new` and `create` (signing up) are public because a visitor has no account yet. The role cannot be chosen.
+  * `PasswordsController`: `new`, `create`, `edit` and `update` (a forgotten password) are public because the person cannot sign in. `edit` and `update` need the token from the email.
+* **Alternative & Impact**: A policy for these actions would answer `true` to everyone, which adds a check that can never refuse. The list and the page of the services are also public, but they do ask their policy, so a change of rule happens in one place. A test fails if another controller skips the check and is not named here.
+
+### Decision 7: A Repair the Reader May Not Open Answers 403
+* **Question**: A mechanic who changes the id in the URL can receive a `403` or a `404`. Which one?
+* **Assumption Made**: **`403`**, on the page of the repair and on its edit form, because the policy answers before anything else and every refused request ends the same way. It does tell a mechanic that a repair with that id exists, which reveals nothing they could not guess: ids are consecutive and the workshop's staff all know how many repairs there are.
+* **Alternative & Impact**: Finding the record through the policy scope would answer `404`, and hide whether the id exists. It would also make refused requests end in two different ways, depending on the reason.

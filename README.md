@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - **Ruby:** `4.0.4`
-- **Rails:** `8.0.x`
+- **Rails:** `8.1.x`
 - **Node.js:** `26.1.0` (with `npm`)
 - **Yarn:** `1.22.x`
 - **PostgreSQL:** Running locally with a superuser role matching your current system user with database creation permissions (postgress needs the same user as the os user)
@@ -39,14 +39,16 @@ Open <http://localhost:3000>. Every page except the price list asks you to sign 
 
 The seed creates these accounts. **They exist only in development, on your machine**, and every run of the seed resets them. Customers do not have accounts.
 
-| Email address | Password | Role | Member of the staff |
-| ------------- | -------- | ---- | ------------------- |
-| `robin@wheelhouse.example` | `robin-owner-2026` | owner | Robin Hale |
-| `sam@wheelhouse.example` | `sam-lead-wrench` | mechanic | Sam Vasquez |
-| `alex@wheelhouse.example` | `alex-junior-spokes` | mechanic | Alex Chen |
-| `jordan@wheelhouse.example` | `jordan-true-wheels` | mechanic | Jordan Taylor |
-| `pat@wheelhouse.example` | `pat-front-counter` | counter | Pat Morgan |
-| `guest@wheelhouse.example` | `guest-new-account` | mechanic (the default) | None |
+| Email address | Password | Role | Member of the staff | What it can do |
+| ------------- | -------- | ---- | ------------------- | -------------- |
+| `robin@wheelhouse.example` | `robin-owner-2026` | owner | Robin Hale | Everything, including the price list, the staff and repairs already handed back. |
+| `sam@wheelhouse.example` | `sam-lead-wrench` | mechanic | Sam Vasquez | Reads and works on the repairs assigned to Sam; reads the services and the staff. |
+| `alex@wheelhouse.example` | `alex-junior-spokes` | mechanic | Alex Chen | Reads and works on the repairs assigned to Alex; reads the services and the staff. |
+| `jordan@wheelhouse.example` | `jordan-true-wheels` | mechanic | Jordan Taylor | Reads and works on the repairs assigned to Jordan; reads the services and the staff. |
+| `pat@wheelhouse.example` | `pat-front-counter` | counter | Pat Morgan | Takes bikes in, manages customers and bikes without deleting them, and edits repairs not handed back. |
+| `guest@wheelhouse.example` | `guest-new-account` | mechanic (the default) | None | Reads the services and the staff; has no repairs of its own, so it reads none. |
+
+The whole set of rules is in [`docs/permissions.md`](./docs/permissions.md).
 
 Anyone can also create an account at <http://localhost:3000/registration/new>. It always gets the default role. To change the role of an account or join it to a member of the staff, use the console, `bin/rails console`:
 
@@ -114,3 +116,7 @@ The API accepts browser requests from two origins only: `https://lucasnestler.gi
 ## Tests
 
 `bin/rails test`
+
+The security scanner must report no warnings:
+
+`bin/brakeman`
