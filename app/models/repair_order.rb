@@ -1,6 +1,8 @@
 class RepairOrder < ApplicationRecord
   belongs_to :bike
   belongs_to :mechanic, optional: true
+  # The account that took the repair in. NULL for the repairs older than the column.
+  belongs_to :taken_in_by, class_name: "User", optional: true
   has_many :repair_line_items, -> { oldest_first }, dependent: :destroy
   has_many :services, through: :repair_line_items
 

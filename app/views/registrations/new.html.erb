@@ -1,0 +1,27 @@
+<% content_for :title, "Sign up" %>
+<h1>Sign up</h1>
+
+<%= form_with model: @user, url: registration_path, class: "mt-4", html: { novalidate: true } do |form| %>
+  <div class="mb-3">
+    <%= form.label :email_address, "Email address", class: "form-label" %>
+    <%= form.email_field :email_address, class: field_class(@user, :email_address, "form-control"), autofocus: true, autocomplete: "username" %>
+    <%= invalid_feedback(@user, :email_address) %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :password, class: "form-label" %>
+    <%= form.password_field :password, class: field_class(@user, :password, "form-control"), autocomplete: "new-password", maxlength: 72 %>
+    <div class="form-text">At least <%= User::PASSWORD_MINIMUM_LENGTH %> characters.</div>
+    <%= invalid_feedback(@user, :password) %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :password_confirmation, "Confirm your password", class: "form-label" %>
+    <%= form.password_field :password_confirmation, class: field_class(@user, :password_confirmation, "form-control"), autocomplete: "new-password", maxlength: 72 %>
+    <%= invalid_feedback(@user, :password_confirmation) %>
+  </div>
+
+  <%= form.submit "Sign up", class: "btn btn-primary" %>
+<% end %>
+
+<p class="mt-4">Already have an account? <%= link_to "Sign in", new_session_path %></p>

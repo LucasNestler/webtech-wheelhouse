@@ -6,7 +6,7 @@ class BikesController < ApplicationController
   end
 
   def show
-    @repair_orders = @bike.repair_orders.includes(bike: :customer).with_attached_intake_photos.with_rich_text_diagnosis
+    @repair_orders = @bike.repair_orders.includes(bike: :customer, taken_in_by: :mechanic).with_attached_intake_photos.with_rich_text_diagnosis
   end
 
   def new

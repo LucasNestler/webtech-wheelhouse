@@ -18,3 +18,13 @@
 * **Question**: How are yearly catalog price changes managed without affecting prior years' line items or breaking annual reporting?
 * **Assumption Made**: We assume `ServiceCatalog` stores current active pricing alongside an `active_year` flag, while `RepairLineItem` explicitly snapshots the `charged_price` at the moment a service is added to an order. The catalog serves as a template, but historical billing records rely solely on `charged_price`.
 * **Alternative & Impact**: If we instead maintained a historical lookup table for standard prices (versioned catalog prices by effective date range) and omitted `charged_price` on line items, every invoice calculation would require complex date-range queries. Furthermore, custom discounts granted to regular customers would either be impossible or require a separate "discounts" table.
+
+### Decision 4: The Default Role of an Account
+* **Question**: Sign-up is public and cannot choose a role, so every new account starts with the default. Which of `owner`, `mechanic` and `counter` has the fewest permissions?
+* **Assumption Made**: The default is **`mechanic`**. A mechanic needs the job on the bench and little else. The person at the counter deals with customers, their phone numbers, estimates and money, and the owner answers for all of it. Customers do not have accounts, so there is no `client` role.
+* **Alternative & Impact**: If the default were `counter`, a new account would start with the role closest to customers' personal data and to the money. The role does not restrict any page yet: until it does, anyone who signs up can open every page that requires a session, whatever the default is.
+
+### Decision 5: Intake Photos and the Session
+* **Question**: Every page requires a session. Do the files of the intake photos require one as well?
+* **Assumption Made**: No. Active Storage serves them from its own controllers, through long signed URLs that nobody can guess. A visitor can only reach a photo with a URL that was first shown to someone signed in.
+* **Alternative & Impact**: Requiring a session for the files would mean replacing the routes of Active Storage, for a risk that only appears if someone shares a URL.

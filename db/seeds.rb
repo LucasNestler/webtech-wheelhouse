@@ -5,6 +5,8 @@ ActionText::RichText.delete_all
 
 RepairLineItem.delete_all
 RepairOrder.delete_all
+Session.delete_all
+User.delete_all
 Bike.delete_all
 Customer.delete_all
 Mechanic.delete_all
@@ -13,10 +15,24 @@ Service.delete_all
 puts "Clearing old data..."
 
 puts "Seeding Staff..."
+owner_robin = Mechanic.create!(name: "Robin Hale", role: "Owner")
 mechanic_sam = Mechanic.create!(name: "Sam Vasquez", role: "Lead Mechanic")
 mechanic_alex = Mechanic.create!(name: "Alex Chen", role: "Junior Mechanic")
 mechanic_jordan = Mechanic.create!(name: "Jordan Taylor", role: "Wheel Specialist")
 counter_pat = Mechanic.create!(name: "Pat Morgan", role: "Counter Staff")
+
+puts "Seeding Accounts..."
+# These passwords exist only in development, and the README lists them.
+def seed_account(email_address, password, **attributes)
+  User.create!(email_address: email_address, password: password, password_confirmation: password, **attributes)
+end
+
+account_robin = seed_account("robin@wheelhouse.example", "robin-owner-2026", role: "owner", mechanic: owner_robin)
+account_sam = seed_account("sam@wheelhouse.example", "sam-lead-wrench", role: "mechanic", mechanic: mechanic_sam)
+account_alex = seed_account("alex@wheelhouse.example", "alex-junior-spokes", role: "mechanic", mechanic: mechanic_alex)
+seed_account("jordan@wheelhouse.example", "jordan-true-wheels", role: "mechanic", mechanic: mechanic_jordan)
+account_pat = seed_account("pat@wheelhouse.example", "pat-front-counter", role: "counter", mechanic: counter_pat)
+seed_account("guest@wheelhouse.example", "guest-new-account") # belongs to nobody, with the default role
 
 
 puts "Seeding Services..."
@@ -95,6 +111,7 @@ RepairLineItem.create!(repair_order_id: ro1.id, service_id: s_flat.id, charged_p
 
 # 2. Awaiting Estimate Approval
 ro2 = RepairOrder.create!(
+  taken_in_by: account_pat,
   bike_id: b2_giant2.id,
   mechanic_id: mechanic_alex.id,
   status: "Awaiting Estimate Approval",
@@ -107,6 +124,7 @@ RepairLineItem.create!(repair_order_id: ro2.id, service_id: s_chain.id, charged_
 
 # 3. In Progress
 ro3 = RepairOrder.create!(
+  taken_in_by: account_pat,
   bike_id: b3_david_road.id,
   mechanic_id: mechanic_sam.id,
   status: "In Progress",
@@ -119,6 +137,7 @@ RepairLineItem.create!(repair_order_id: ro3.id, service_id: s_brake_pad.id, char
 
 # 4. Ready for Pickup
 ro4 = RepairOrder.create!(
+  taken_in_by: account_robin,
   bike_id: b5.id,
   mechanic_id: mechanic_jordan.id,
   status: "Ready for Pickup",
@@ -132,6 +151,7 @@ RepairLineItem.create!(repair_order_id: ro4.id, service_id: s_wheel_true.id, cha
 # ----------------------------------------------------------------------
 # 5. Picked Up
 ro5 = RepairOrder.create!(
+  taken_in_by: account_pat,
   bike_id: b6.id,
   mechanic_id: mechanic_sam.id,
   status: "Picked Up",
@@ -147,6 +167,7 @@ RepairLineItem.create!(repair_order_id: ro5.id, service_id: s_drivetrain.id, cha
 # ----------------------------------------------------------------------
 # 6. SPECIAL CASE: Overdue repair
 ro6 = RepairOrder.create!(
+  taken_in_by: account_sam,
   bike_id: b7.id,
   mechanic_id: mechanic_alex.id,
   status: "In Progress",
@@ -159,6 +180,7 @@ RepairLineItem.create!(repair_order_id: ro6.id, service_id: s_fork_service.id, c
 
 # 7. SPECIAL CASE: Came in and went out the SAME DAY
 ro7 = RepairOrder.create!(
+  taken_in_by: account_pat,
   bike_id: b8.id,
   mechanic_id: mechanic_jordan.id,
   status: "Picked Up",
@@ -174,6 +196,7 @@ RepairLineItem.create!(repair_order_id: ro7.id, service_id: s_flat.id, charged_p
 
 # 8. SPECIAL CASE: Customer rejected estimate
 ro8 = RepairOrder.create!(
+  taken_in_by: account_alex,
   bike_id: b9.id,
   mechanic_id: mechanic_alex.id,
   status: "Ready for Pickup",
@@ -200,6 +223,7 @@ RepairLineItem.create!(repair_order_id: ro9_old.id, service_id: s_tuneup.id, cha
 
 # 10. SPECIAL CASE: Bike with MULTIPLE repairs on different dates (Second Repair - Current)
 ro10_new = RepairOrder.create!(
+  taken_in_by: account_pat,
   bike_id: b4_david_mtb.id,
   mechanic_id: mechanic_jordan.id,
   status: "In Progress",
@@ -212,6 +236,7 @@ RepairLineItem.create!(repair_order_id: ro10_new.id, service_id: s_tubeless.id, 
 # 11. SPECIAL CASE: Repair before last January with HISTORICAL prices
 # (Charged price differs from current list price)
 ro11_historical = RepairOrder.create!(
+  taken_in_by: account_robin,
   bike_id: b10.id,
   mechanic_id: mechanic_sam.id,
   status: "Picked Up",
@@ -229,6 +254,7 @@ RepairLineItem.create!(repair_order_id: ro11_historical.id, service_id: s_chain.
 
 # 12. Dropped Off (Multi-item job)
 ro12 = RepairOrder.create!(
+  taken_in_by: account_pat,
   bike_id: b11.id,
   mechanic_id: nil,
   status: "Dropped Off",
@@ -240,6 +266,7 @@ RepairLineItem.create!(repair_order_id: ro12.id, service_id: s_bar_tape.id, char
 
 # 13. Picked Up (Accessory installations)
 ro13 = RepairOrder.create!(
+  taken_in_by: account_sam,
   bike_id: b12.id,
   mechanic_id: mechanic_alex.id,
   status: "Picked Up",
@@ -255,6 +282,7 @@ RepairLineItem.create!(repair_order_id: ro13.id, service_id: s_rack.id, charged_
 
 # 14. In Progress (Complex bottom bracket + headset service)
 ro14 = RepairOrder.create!(
+  taken_in_by: account_pat,
   bike_id: b1_giant1.id,
   mechanic_id: mechanic_sam.id,
   status: "In Progress",
@@ -268,6 +296,7 @@ RepairLineItem.create!(repair_order_id: ro14.id, service_id: s_headset.id, charg
 # ----------------------------------------------------------------------
 # 15. Ready for Pickup (Custom Assembly)
 ro15 = RepairOrder.create!(
+  taken_in_by: account_robin,
   bike_id: b3_david_road.id,
   mechanic_id: mechanic_jordan.id,
   status: "Ready for Pickup",

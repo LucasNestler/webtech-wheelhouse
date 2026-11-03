@@ -5,7 +5,7 @@ class RepairOrdersController < ApplicationController
   EDIT_REPAIR_EXTRA_BLANK_LINES = 2
 
   def index
-    @repair_orders = RepairOrder.includes(bike: :customer).with_attached_intake_photos.with_rich_text_diagnosis.by_promised_date
+    @repair_orders = RepairOrder.includes(bike: :customer, taken_in_by: :mechanic).with_attached_intake_photos.with_rich_text_diagnosis.by_promised_date
   end
 
   def show
@@ -24,6 +24,7 @@ class RepairOrdersController < ApplicationController
 
   def create
     @repair_order = RepairOrder.new(repair_order_params)
+    @repair_order.taken_in_by = Current.user
     if @repair_order.save
       redirect_to @repair_order, notice: "Repair ##{@repair_order.id} was added."
     else
@@ -52,7 +53,7 @@ class RepairOrdersController < ApplicationController
   private
 
   def set_repair_order
-    @repair_order = RepairOrder.includes(:mechanic, bike: :customer, repair_line_items: :service)
+    @repair_order = RepairOrder.includes(:mechanic, bike: :customer, repair_line_items: :service, taken_in_by: :mechanic)
       .with_attached_intake_photos.with_rich_text_diagnosis.find(params[:id])
   end
 

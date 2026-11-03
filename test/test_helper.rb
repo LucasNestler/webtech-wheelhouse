@@ -13,3 +13,14 @@ module ActiveSupport
     # Add more helper methods to be used by all tests here...
   end
 end
+
+class ActionDispatch::IntegrationTest
+  TEST_PASSWORD = "correct-password".freeze
+
+  private
+
+  def sign_in_as(user, password: TEST_PASSWORD)
+    post session_path, params: { email_address: user.email_address, password: password }
+    assert cookies[:session_id].present?, "#{user.email_address} did not sign in"
+  end
+end

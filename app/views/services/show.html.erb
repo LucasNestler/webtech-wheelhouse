@@ -9,6 +9,8 @@
   <% end %>
 </p>
 
-<%= render "shared/record_actions", record: @service, record_label: @service.name %>
+<% if authenticated? %>
+  <%= render "shared/record_actions", record: @service, record_label: @service.name %>
+<% end %>
 
 <p class="mt-4"><%= link_to "Back to Services", services_path %></p>

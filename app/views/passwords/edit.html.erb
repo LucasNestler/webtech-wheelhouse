@@ -1,0 +1,19 @@
+<% content_for :title, "Update your password" %>
+<h1>Update your password</h1>
+
+<%= form_with url: password_path(params[:token]), method: :put, class: "mt-4" do |form| %>
+  <div class="mb-3">
+    <%= form.label :password, "New password", class: "form-label" %>
+    <%= form.password_field :password, class: field_class(@user, :password, "form-control"), autofocus: true, autocomplete: "new-password", maxlength: 72 %>
+    <div class="form-text">At least <%= User::PASSWORD_MINIMUM_LENGTH %> characters.</div>
+    <%= invalid_feedback(@user, :password) %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :password_confirmation, "Repeat the new password", class: "form-label" %>
+    <%= form.password_field :password_confirmation, class: field_class(@user, :password_confirmation, "form-control"), autocomplete: "new-password", maxlength: 72 %>
+    <%= invalid_feedback(@user, :password_confirmation) %>
+  </div>
+
+  <%= form.submit "Save", class: "btn btn-primary" %>
+<% end %>

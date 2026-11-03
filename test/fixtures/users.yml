@@ -1,0 +1,10 @@
+# The password of both is in ActionDispatch::IntegrationTest::TEST_PASSWORD (test_helper.rb).
+<% password_digest = BCrypt::Password.create("correct-password") %>
+
+one:
+  email_address: one@example.com
+  password_digest: <%= password_digest %>
+
+two:
+  email_address: two@example.com
+  password_digest: <%= password_digest %>

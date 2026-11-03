@@ -33,7 +33,32 @@ All initial analysis and project specification documentation are located in the 
 7. **Start the development server:**
    `bin/dev`
 
-Open <http://localhost:3000/repairs>: the repairs index shows a thumbnail and the start of the diagnosis on each row.
+Open <http://localhost:3000>. Every page except the price list asks you to sign in, with one of the accounts below. After that, <http://localhost:3000/repairs> shows a thumbnail and the start of the diagnosis on each row.
+
+## Accounts
+
+The seed creates these accounts. **They exist only in development, on your machine**, and every run of the seed resets them. Customers do not have accounts.
+
+| Email address | Password | Role | Member of the staff |
+| ------------- | -------- | ---- | ------------------- |
+| `robin@wheelhouse.example` | `robin-owner-2026` | owner | Robin Hale |
+| `sam@wheelhouse.example` | `sam-lead-wrench` | mechanic | Sam Vasquez |
+| `alex@wheelhouse.example` | `alex-junior-spokes` | mechanic | Alex Chen |
+| `jordan@wheelhouse.example` | `jordan-true-wheels` | mechanic | Jordan Taylor |
+| `pat@wheelhouse.example` | `pat-front-counter` | counter | Pat Morgan |
+| `guest@wheelhouse.example` | `guest-new-account` | mechanic (the default) | None |
+
+Anyone can also create an account at <http://localhost:3000/registration/new>. It always gets the default role. To change the role of an account or join it to a member of the staff, use the console, `bin/rails console`:
+
+`User.find_by(email_address: "guest@wheelhouse.example").update!(role: :counter, mechanic: Mechanic.find_by(name: "Pat Morgan"))`
+
+## Reading the emails
+
+No email leaves your machine, and nothing about email needs to be configured. Every email the application sends (the password reset and the welcome) goes to a local inbox at <http://localhost:3000/letters>, which exists only in development and keeps the files in `tmp/letter_opener`.
+
+To try a forgotten password: click **Forgot password?** on the sign-in page, enter an address from the table, open the inbox and follow the link in the email. The link works for 15 minutes.
+
+To see the designs of the emails without sending any, open <http://localhost:3000/rails/mailers>.
 
 ## The API
 
@@ -80,7 +105,9 @@ Register a service:
 
 The [published page](https://lucasnestler.github.io/webtech-lab-01/) has a **Price List** section that reads this API from the browser. Its code is in [`webtech-lab-01`](https://github.com/LucasNestler/webtech-lab-01).
 
-**The API has to run on port 3000** for the page to find it, which is what `bin/dev` uses. Start it, then open the page: the section shows the services from your database. If the browser asks whether the page may reach devices on your local network, allow it. Without the API running, the section says the price list is not answering.
+**The API has to run on port 3000** for the page to find it, which is what `bin/dev` uses. Start it, then open the page: the section shows the services from your database. Without the API running, the section says the price list is not answering.
+
+**Allow the page to reach your computer.** Chrome and Firefox block a public site from reaching `localhost` until you give it permission, and the section shows the same "not answering" sentence until you do. The API receives no request while it is blocked.
 
 The API accepts browser requests from two origins only: `https://lucasnestler.github.io`, and `http://localhost:5500` for developing the page. To develop it, serve a clone of `webtech-lab-01` on that port with `python3 -m http.server 5500`, and open <http://localhost:5500>.
 

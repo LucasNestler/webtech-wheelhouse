@@ -4,6 +4,7 @@ class RepairPhotosTest < ActionDispatch::IntegrationTest
   PNG = Rails.root.join("db/seeds/black_bike.png")
 
   setup do
+    sign_in_as users(:one)
     customer = Customer.create!(name: "Test", phone: "555")
     @bike = Bike.create!(make: "Giant", model: "Escape", color: "Blue", serial_number: "SN-T-1", customer: customer)
     @repair = RepairOrder.create!(bike: @bike, promised_on: Date.current + 2)
